@@ -1,0 +1,88 @@
+﻿<Window x:Class="WpfApp.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp"
+        mc:Ignorable="d"
+        Title="TODOApp" Height="450" Width="800"
+        Background="LightGray"
+       >
+
+    <Window.Resources>
+        <Style x:Key="ButtonStyle"
+               TargetType="Button">
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Background" Value="Bisque"/>
+            <Setter Property="FontStyle" Value="Italic"/>
+            <Setter Property="BorderThickness" Value="3"/>
+            <Setter Property="Padding" Value="4"/>
+        </Style>
+
+        <DataTemplate x:Key="TODOItemTemplate">
+            <StackPanel Orientation="Horizontal">
+                <CheckBox IsChecked="{Binding Path=IsDone}"/>
+                <TextBlock x:Name="TODOName" Width="230" Text="{Binding Path=Name}"/>
+                <TextBlock Width="230" Text="{Binding Path=Datum}"/>
+            </StackPanel>
+        </DataTemplate>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Margin="16">
+            <TextBlock Text="New TODO" 
+                       Margin="0, 0, 0, 8"/>
+            <StackPanel VerticalAlignment="Top"
+                        Orientation="Horizontal"
+                        Height="40">
+                <TextBox Width="200"
+                         x:Name="NewTODOTextBox"
+                         Text="{Binding NewToDoName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <Button x:Name="NewTODOButton"
+                        Style="{StaticResource ButtonStyle}"
+                        Margin="8, 0, 0, 0"
+                        CommandParameter="{Binding NewToDoName}"
+                        Command="{Binding AddNewToDoCommand}"
+                        Content= "Add TODO"
+                        Padding="4"/>
+            </StackPanel>
+        </StackPanel>
+
+        <StackPanel Margin="10" Grid.Row="1">
+            <TextBlock Text="TODO List" 
+                       Margin="0, 0, 0, 8"/>
+        </StackPanel>
+
+        <StackPanel Margin="10"
+                    VerticalAlignment="Top"
+                    Grid.Row="2"
+                    Orientation="Horizontal">
+            <ListBox x:Name="TODOListBox" 
+                     SelectedItem="{Binding SelectedTodoItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     ItemsSource="{Binding ToDoItems, Mode=TwoWay}"
+                     Height="200"
+                     Width="400"
+                     ItemTemplate="{StaticResource TODOItemTemplate}"
+                 >
+               
+                <!--<ListBoxItem>TODO 1</ListBoxItem>
+                <ListBoxItem>TODO 2</ListBoxItem>-->
+            </ListBox>
+            <Button x:Name="DeleteTODOButton"
+                    Style="{StaticResource ButtonStyle}"
+                    Margin="8, 0, 0, 0"
+                    CommandParameter="{Binding SelectedTodoItem}"
+                    Command="{Binding DeleteToDoCommand}"                  
+                    Content="Delete TODO"
+                    Padding="4"
+                    Height="40"
+                    VerticalAlignment="Top"/>
+        </StackPanel>
+
+    </Grid>
+</Window>
