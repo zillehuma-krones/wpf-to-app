@@ -32,10 +32,10 @@ public TODOItem TodoItem { get; }
         }
 
 
-        public DateTime Datum
+        public DateTime TimeStamp
         {
-            get { return TodoItem.Datum; }
-            set { TodoItem.Datum = value; }
+            get { return TodoItem.TimeStamp; }
+            set { TodoItem.TimeStamp = value; }
         }
 
 

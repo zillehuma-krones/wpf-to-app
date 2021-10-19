@@ -13,9 +13,9 @@ namespace WpfApp.Commands
 
     public class AddNewTodoCommand : ICommand
     {
-        private MainWindowViewModel _viewModel;
+        private MainWindowViewModel_old _viewModel;
 
-        public AddNewTodoCommand(MainWindowViewModel viewModel)
+        public AddNewTodoCommand(MainWindowViewModel_old viewModel)
         {
             _viewModel = viewModel;
         }

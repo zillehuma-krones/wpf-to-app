@@ -18,13 +18,10 @@ namespace WpfApp.Views
     {
        public MainWindow()
         {
-            InitializeComponent();
-            ITodoItemService _todoItemService = new TodoItemService();
-
-            //DataContext = new MainWindowViewModel();
-            DataContext = new MainWindowViewModelForDelegateCommand(_todoItemService);
-         
-
+            InitializeComponent();       
+            DataContext = new MainWindowViewModel(
+                new TodoItemService(),
+                new DateTimeService());
 
         }
 

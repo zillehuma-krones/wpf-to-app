@@ -104,8 +104,8 @@
     <Compile Include="Services\IDateTimeService.cs" />
     <Compile Include="Services\ITodoItemService.cs" />
     <Compile Include="Services\TodoItemService.cs" />
+    <Compile Include="ViewModels\MainWindowViewModel_old.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
-    <Compile Include="ViewModels\MainWindowViewModelForDelegateCommand.cs" />
     <Compile Include="ViewModels\ToDoItemViewModel.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -140,9 +140,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Test\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="packages\EmptyFiles.2.3.3\build\EmptyFiles.targets" Condition="Exists('packages\EmptyFiles.2.3.3\build\EmptyFiles.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

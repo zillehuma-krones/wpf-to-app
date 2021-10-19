@@ -10,9 +10,9 @@ namespace WpfApp.Commands
 {
     public class DeleteToDoCommand:ICommand
     {
-        private MainWindowViewModel _viewModel;
+        private MainWindowViewModel_old _viewModel;
 
-        public DeleteToDoCommand(MainWindowViewModel viewModel)
+        public DeleteToDoCommand(MainWindowViewModel_old viewModel)
         {
             _viewModel = viewModel;
         }

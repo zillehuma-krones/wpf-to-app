@@ -8,7 +8,7 @@ namespace WpfApp.Services
 {
     public interface IDateTimeService
     {
-        DateTime GetDatum();
+        DateTime Now();
 
     }
 }

@@ -10,72 +10,93 @@ using System.Windows.Input;
 using WpfApp.Models;
 using WpfApp.Commands;
 using Newtonsoft.Json;
+using WpfApp.Services;
 
 namespace WpfApp.ViewModels
 {
-   public class MainWindowViewModel
+    public class MainWindowViewModel
     {
 
-        public const string FILE_PATH = "..\\..\\TODOs.json";
+        private readonly ITodoItemService _todoItemService;
+        private readonly IDateTimeService _dateTimeService;
 
-        public BindingList<TODOItem> ToDoItems { get; set; }
-       
-        public TODOItem SelectedTodoItem { get; set; }
+        public BindingList<ToDoItemViewModel> ToDoItems { get; set; }
 
-        public AddNewTodoCommand AddNewToDoCommand { get; set; }
+        public ToDoItemViewModel SelectedTodoItem { get; set; }
 
-        public DeleteToDoCommand DeleteToDoCommand { get; set; }
+        public ICommand AddNewToDoCommand { get; set; }
+
+        public ICommand DeleteToDoCommand { get; set; }
+
         public string NewToDoName { get; set; }
-
-
-        public MainWindowViewModel()
+        public bool NewToDoNameIsNotEmpty
         {
-            this.ToDoItems = this.ReadToDoItemsFromFile();
-        
-            AddNewToDoCommand = new AddNewTodoCommand(this);
-            DeleteToDoCommand = new DeleteToDoCommand(this);
+            get
+            {
+                return this.NewToDoName != null && !String.IsNullOrWhiteSpace(this.NewToDoName);
+            }
+        }
+        public bool ToDoItemIsSelected
+        {
+            get
+            {
+                return this.SelectedTodoItem != null;
+            }
+        }
+
+        public MainWindowViewModel(
+            ITodoItemService todoItemService,
+            IDateTimeService dateTimeService)
+        {
+            _todoItemService = todoItemService;
+            ToDoItems = new BindingList<ToDoItemViewModel>();
+            var todoItems = _todoItemService.ReadToDoItems();
+
+            if (todoItems != null)
+                foreach (var item in todoItems)
+                {
+                    ToDoItems.Add(CreateToDoViewModel(item));
+                }
+
+            AddNewToDoCommand = new DelegateCommand(param => this.NewToDoNameIsNotEmpty, param => this.AddNewTodo());
+            DeleteToDoCommand = new DelegateCommand(param => this.ToDoItemIsSelected, param => this.DeleteTodo());
 
         }
 
-        private BindingList<TODOItem> ReadToDoItemsFromFile()
+        private ToDoItemViewModel CreateToDoViewModel(TODOItem item)
         {
-            var toDoItems = new BindingList<TODOItem>();
-
-            var jsonOutput= JsonConvert.DeserializeObject<BindingList<TODOItem>>(File.ReadAllText(FILE_PATH));
-
-            toDoItems = jsonOutput;
-
-            return toDoItems;
-
+            return new ToDoItemViewModel(item, _todoItemService, ToDoItems);
         }
 
 
-        public void NewTODOButton_Click()
+        public void AddNewTodo()
         {
             if (!String.IsNullOrWhiteSpace(NewToDoName))
             {
-                TODOItem todo = new TODOItem() { Name = NewToDoName, IsDone = false };
-                ToDoItems.Add(todo);
+                TODOItem todo = new TODOItem()
+                {
+                    Name = NewToDoName,
+                    TimeStamp = _dateTimeService.Now(),
+                    IsDone = false
+                };
+                ToDoItems.Add(CreateToDoViewModel(todo));
             }
-                       
 
-            var jsonInput = JsonConvert.SerializeObject(ToDoItems, Formatting.Indented);
-
-            File.WriteAllText(FILE_PATH, jsonInput);
+            var todoItems = ToDoItems.Select(vm => vm.TodoItem);
+            this._todoItemService.WriteToDoItems(new BindingList<TODOItem>(todoItems.ToList()));
 
 
         }
 
-        public void DeleteTODOButton_Click()
-        {  
-
-            if(SelectedTodoItem!=null)
+        public void DeleteTodo()
+        {
+            if (SelectedTodoItem != null)
             {
                 ToDoItems.Remove(SelectedTodoItem);
             }
-            var jsonInput = JsonConvert.SerializeObject(ToDoItems, Formatting.Indented);
 
-            File.WriteAllText(FILE_PATH, jsonInput);
+            var todoItems = ToDoItems.Select(vm => vm.TodoItem);
+            this._todoItemService.WriteToDoItems(new BindingList<TODOItem>(todoItems.ToList()));
 
 
         }
@@ -86,3 +107,4 @@ namespace WpfApp.ViewModels
 
     }
 }
+

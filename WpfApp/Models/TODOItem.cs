@@ -15,6 +15,6 @@ namespace WpfApp.Models
 
         public string Name { get; set; }
         public bool IsDone { get; set; }
-        public DateTime Datum { get; set; }
+        public DateTime TimeStamp { get; set; }
     }
 }
