@@ -16,7 +16,7 @@ namespace WpfApp.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
-
+        private string placeholder = "Neues Todo";
         private readonly ITodoItemService _todoItemService;
         private readonly IDateTimeService _dateTimeService;
 
@@ -57,7 +57,9 @@ namespace WpfApp.ViewModels
             ITodoItemService todoItemService,
             IDateTimeService dateTimeService)
         {
+            NewToDoName = placeholder;
             _todoItemService = todoItemService;
+            _dateTimeService = dateTimeService;
             ToDoItems = new BindingList<ToDoItemViewModel>();
             var todoItems = _todoItemService.ReadToDoItems();
 
@@ -94,7 +96,7 @@ namespace WpfApp.ViewModels
             var todoItems = ToDoItems.Select(vm => vm.TodoItem);
             this._todoItemService.WriteToDoItems(new BindingList<TODOItem>(todoItems.ToList()));
 
-            NewToDoName = "Neues Todo";
+            NewToDoName = placeholder;
         }
 
         public void DeleteTodo()
