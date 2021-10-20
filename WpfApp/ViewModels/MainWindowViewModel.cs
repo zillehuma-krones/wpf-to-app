@@ -49,6 +49,7 @@ namespace WpfApp.ViewModels
             IDateTimeService dateTimeService)
         {
             _todoItemService = todoItemService;
+            _dateTimeService = dateTimeService;
             ToDoItems = new BindingList<ToDoItemViewModel>();
             var todoItems = _todoItemService.ReadToDoItems();
 
