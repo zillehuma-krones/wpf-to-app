@@ -14,7 +14,7 @@ using WpfApp.Services;
 
 namespace WpfApp.ViewModels
 {
-    public class MainWindowViewModel
+    public class MainWindowViewModel : ViewModelBase
     {
 
         private readonly ITodoItemService _todoItemService;
@@ -28,7 +28,16 @@ namespace WpfApp.ViewModels
 
         public ICommand DeleteToDoCommand { get; set; }
 
-        public string NewToDoName { get; set; }
+        private string _newToDoName;
+        public string NewToDoName 
+        {
+            get { return _newToDoName; }
+            set
+            {
+                _newToDoName = value;
+                RaisePropertyChanged("NewToDoName");
+            }
+        }
         public bool NewToDoNameIsNotEmpty
         {
             get
@@ -85,7 +94,7 @@ namespace WpfApp.ViewModels
             var todoItems = ToDoItems.Select(vm => vm.TodoItem);
             this._todoItemService.WriteToDoItems(new BindingList<TODOItem>(todoItems.ToList()));
 
-
+            NewToDoName = "Neues Todo";
         }
 
         public void DeleteTodo()
