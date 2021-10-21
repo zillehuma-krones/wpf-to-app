@@ -9,6 +9,5 @@ namespace WpfApp.Services
     public interface IDateTimeService
     {
         DateTime Now();
-
     }
 }

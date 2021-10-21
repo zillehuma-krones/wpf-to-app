@@ -10,7 +10,7 @@ using WpfApp.Models;
 
 namespace WpfApp.Services
 {
-   public class TodoItemService:ITodoItemService
+   public class TodoItemService : ITodoItemService
     {
         private const string filePath = @"C:\Prj\TestProjekte\WPFLearning\WpfApp\TODOs.json";
 

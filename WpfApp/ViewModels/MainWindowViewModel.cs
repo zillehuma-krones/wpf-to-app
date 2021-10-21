@@ -16,7 +16,7 @@ namespace WpfApp.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
-        private string placeholder = "Neues Todo";
+        private const string placeholder = "Neues Todo";
         private readonly ITodoItemService _todoItemService;
         private readonly IDateTimeService _dateTimeService;
 
@@ -35,14 +35,14 @@ namespace WpfApp.ViewModels
             set
             {
                 _newToDoName = value;
-                RaisePropertyChanged("NewToDoName");
+                RaisePropertyChanged(nameof(NewToDoName));
             }
         }
         public bool NewToDoNameIsNotEmpty
         {
             get
             {
-                return this.NewToDoName != null && !String.IsNullOrWhiteSpace(this.NewToDoName);
+                return (this.NewToDoName != null && !String.IsNullOrWhiteSpace(this.NewToDoName) && this.NewToDoName != placeholder);
             }
         }
         public bool ToDoItemIsSelected
@@ -71,7 +71,6 @@ namespace WpfApp.ViewModels
 
             AddNewToDoCommand = new DelegateCommand(param => this.NewToDoNameIsNotEmpty, param => this.AddNewTodo());
             DeleteToDoCommand = new DelegateCommand(param => this.ToDoItemIsSelected, param => this.DeleteTodo());
-
         }
 
         private ToDoItemViewModel CreateToDoViewModel(TODOItem item)

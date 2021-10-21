@@ -27,14 +27,12 @@ namespace WpfApp.ViewModels
         public DeleteToDoCommand DeleteToDoCommand { get; set; }
         public string NewToDoName { get; set; }
 
-
         public MainWindowViewModel_old()
         {
-            this.ToDoItems = this.ReadToDoItemsFromFile();
+            ToDoItems = ReadToDoItemsFromFile();
         
             AddNewToDoCommand = new AddNewTodoCommand(this);
             DeleteToDoCommand = new DeleteToDoCommand(this);
-
         }
 
         private BindingList<TODOItem> ReadToDoItemsFromFile()
@@ -46,9 +44,7 @@ namespace WpfApp.ViewModels
             toDoItems = jsonOutput;
 
             return toDoItems;
-
         }
-
 
         public void NewTODOButton_Click()
         {
@@ -57,18 +53,14 @@ namespace WpfApp.ViewModels
                 TODOItem todo = new TODOItem() { Name = NewToDoName, IsDone = false };
                 ToDoItems.Add(todo);
             }
-                       
 
             var jsonInput = JsonConvert.SerializeObject(ToDoItems, Formatting.Indented);
 
             File.WriteAllText(FILE_PATH, jsonInput);
-
-
         }
 
         public void DeleteTODOButton_Click()
         {  
-
             if(SelectedTodoItem!=null)
             {
                 ToDoItems.Remove(SelectedTodoItem);
@@ -76,13 +68,8 @@ namespace WpfApp.ViewModels
             var jsonInput = JsonConvert.SerializeObject(ToDoItems, Formatting.Indented);
 
             File.WriteAllText(FILE_PATH, jsonInput);
-
-
-        }
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-
         }
 
+        private void Window_Loaded(object sender, RoutedEventArgs e) { }
     }
 }

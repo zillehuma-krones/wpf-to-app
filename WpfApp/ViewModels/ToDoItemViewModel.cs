@@ -9,12 +9,12 @@ using WpfApp.Services;
 
 namespace WpfApp.ViewModels
 {
-   public class ToDoItemViewModel
+   public class ToDoItemViewModel : ViewModelBase
     {
         private readonly ITodoItemService _todoItemService;
-            private readonly BindingList<TODOItem> _allTodos;
+        private readonly BindingList<TODOItem> _allTodos;
 
-public TODOItem TodoItem { get; }
+        public TODOItem TodoItem { get; }
 
         public string Name
         {
