@@ -13,15 +13,14 @@ namespace WpfApp.Services
    public class TodoItemService:ITodoItemService
     {
         private const string filePath = @"C:\Prj\TestProjekte\WPFLearning\WpfApp\TODOs.json";
-        private const string jensFile = @"C:\temp\Zille\TODOs.json";
 
         public BindingList<TODOItem> ReadToDoItems()
         {
-            if (File.Exists(jensFile))
+            if (File.Exists(filePath))
             {
                 var toDoItems = new BindingList<TODOItem>();
 
-                var jsonOutput = JsonConvert.DeserializeObject<BindingList<TODOItem>>(File.ReadAllText(jensFile));
+                var jsonOutput = JsonConvert.DeserializeObject<BindingList<TODOItem>>(File.ReadAllText(filePath));
 
                 toDoItems = jsonOutput;
 
@@ -34,11 +33,11 @@ namespace WpfApp.Services
 
         public void WriteToDoItems( BindingList<TODOItem> todoItems)
         {
-            if (File.Exists(jensFile))
+            if (File.Exists(filePath))
             {
                 var jsonInput = JsonConvert.SerializeObject(todoItems, Formatting.Indented);
 
-                File.WriteAllText(jensFile, jsonInput);
+                File.WriteAllText(filePath, jsonInput);
             }
             
         }
