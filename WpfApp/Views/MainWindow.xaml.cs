@@ -22,9 +22,6 @@ namespace WpfApp.Views
             DataContext = new MainWindowViewModel(
                 new TodoItemService(),
                 new DateTimeService());
-
         }
-
-    
     }
 }

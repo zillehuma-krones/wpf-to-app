@@ -1,3 +1,4 @@
+
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,9 +15,9 @@ using WpfApp.Services;
 
 namespace WpfApp.ViewModels
 {
-    public class MainWindowViewModel
+    public class MainWindowViewModel : ViewModelBase
     {
-
+        private const string placeholder = "Neues Todo";
         private readonly ITodoItemService _todoItemService;
         private readonly IDateTimeService _dateTimeService;
 
@@ -28,12 +29,21 @@ namespace WpfApp.ViewModels
 
         public ICommand DeleteToDoCommand { get; set; }
 
-        public string NewToDoName { get; set; }
+        private string _newToDoName;
+        public string NewToDoName 
+        {
+            get { return _newToDoName; }
+            set
+            {
+                _newToDoName = value;
+                RaisePropertyChanged(nameof(NewToDoName));
+            }
+        }
         public bool NewToDoNameIsNotEmpty
         {
             get
             {
-                return this.NewToDoName != null && !String.IsNullOrWhiteSpace(this.NewToDoName);
+                return (this.NewToDoName != null && !String.IsNullOrWhiteSpace(this.NewToDoName) && this.NewToDoName != placeholder);
             }
         }
         public bool ToDoItemIsSelected
@@ -48,6 +58,7 @@ namespace WpfApp.ViewModels
             ITodoItemService todoItemService,
             IDateTimeService dateTimeService)
         {
+            NewToDoName = placeholder;
             _todoItemService = todoItemService;
             _dateTimeService = dateTimeService;
             ToDoItems = new BindingList<ToDoItemViewModel>();
@@ -61,7 +72,6 @@ namespace WpfApp.ViewModels
 
             AddNewToDoCommand = new DelegateCommand(param => this.NewToDoNameIsNotEmpty, param => this.AddNewTodo());
             DeleteToDoCommand = new DelegateCommand(param => this.ToDoItemIsSelected, param => this.DeleteTodo());
-
         }
 
         private ToDoItemViewModel CreateToDoViewModel(TODOItem item)
@@ -86,7 +96,7 @@ namespace WpfApp.ViewModels
             var todoItems = ToDoItems.Select(vm => vm.TodoItem);
             this._todoItemService.WriteToDoItems(new BindingList<TODOItem>(todoItems.ToList()));
 
-
+            NewToDoName = placeholder;
         }
 
         public void DeleteTodo()
@@ -108,4 +118,3 @@ namespace WpfApp.ViewModels
 
     }
 }
-
